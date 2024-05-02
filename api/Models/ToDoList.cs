@@ -7,11 +7,10 @@ namespace api.Models
 {
     public class ToDoList
     {
-        public int Id {get; set;}
-        public string? TaskOne {get; set;}
-        public string? TaskTwo {get; set;}
-        public string? TaskThree {get; set;}
-        public string? TaskFour {get; set;}
+        public int Id { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public bool? IsCompleted { get; set; }
 
     }
 }
