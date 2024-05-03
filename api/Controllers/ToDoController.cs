@@ -47,15 +47,60 @@ namespace api.Controllers
         return BadRequest();
       }
 
+      [HttpDelete("{id:int}")]
 
+      public async Task<IActionResult> Delete(int id)
+      {
+        var doList = await _context.ToDoLists.FindAsync();
+        if(doList == null)
+        {
+          return NotFound();
+        }
 
+        _context.Remove(doList);
 
+        var result = await _context.SaveChangesAsync();
 
+        if(result > 0)
+        {
+          return Ok("Task was deleted");
+        }
+        return BadRequest("Cannot find Task");
+      }
 
+     [HttpGet("{id:int}")]
 
+     public async Task<ActionResult<ToDoList>> GetTask(int id)
+     {
+        var doList = await _context.ToDoLists.FindAsync(id);
+        if(doList == null)
+        {
+            return NotFound("Sorry, Task was not found");
+        }
+        return Ok(doList);
+     }
 
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> TaskEdit(int id, ToDoList doList)
+    {
+        var doListFromDb = await _context.ToDoLists.FindAsync(id);
+        if(doListFromDb == null)
+        {
+            return BadRequest("Task not found");
+        }
+        doListFromDb.Title = doList.Title;
+        doListFromDb.Description = doList.Description;
+        doListFromDb.IsCompleted = doList.IsCompleted;
+  
 
+        var result = await _context.SaveChangesAsync();
 
+        if(result > 0)
+        {
+            return Ok("Task was edited");
+        }
+        return BadRequest("Unable to update data");
+    }
 
 
     }
